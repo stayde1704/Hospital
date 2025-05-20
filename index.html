@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>VIT Clubs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap & jQuery CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .club-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: box-shadow 0.2s;
+        }
+
+        .club-card:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Explore Clubs at VIT</h2>
+
+        <!-- Nav pills -->
+        <ul class="nav nav-pills mb-3 justify-content-center" id="clubTabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="pill" href="#technical">Technical</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#cultural">Cultural</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#social">Social</a>
+            </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content" id="clubContent">
+            <div class="tab-pane fade show active" id="technical"></div>
+            <div class="tab-pane fade" id="cultural"></div>
+            <div class="tab-pane fade" id="social"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+  // Sample club data
+  const clubData = {
+    technical: [
+      { name: "CodeChef VIT", desc: "Competitive programming club hosting regular contests." },
+      { name: "IEEE VIT", desc: "Focuses on tech innovation, research, and publications." }
+    ],
+    cultural: [
+      { name: "Dramatics Club", desc: "Theatre and acting performances." },
+      { name: "Dance Club", desc: "Cultural dance events and competitions." }
+    ],
+    social: [
+      { name: "NSS VIT", desc: "Social service and volunteering initiatives." },
+      { name: "Rotaract Club", desc: "Community service and leadership." }
+    ]
+  };
+
+  // Save to localStorage
+  if (!localStorage.getItem("vitClubs")) {
+    localStorage.setItem("vitClubs", JSON.stringify(clubData));
+  }
+
+  function displayClubs(category) {
+    const data = JSON.parse(localStorage.getItem("vitClubs"));
+    const clubs = data[category];
+    let content = '';
+    clubs.forEach(club => {
+      content += `
+        <div class="club-card">
+          <h5>${club.name}</h5>
+          <p>${club.desc}</p>
+        </div>
+      `;
+    });
+    $("#" + category).html(content);
+  }
+
+  // Initially load technical clubs
+  displayClubs("technical");
+
+  // Load clubs on tab switch
+  $("#clubTabs a").on("click", function () {
+    const category = $(this).attr("href").substring(1); // remove #
+    displayClubs(category);
+  });
+});
+
+    </script>
+</body>
+
+</html>
